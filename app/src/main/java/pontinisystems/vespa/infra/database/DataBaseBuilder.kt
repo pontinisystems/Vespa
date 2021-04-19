@@ -17,7 +17,7 @@ import pontinisystems.vespa.infra.database.entities.StockFavoriteEntity
 
 abstract class DataBaseBuilder :RoomDatabase(){
     companion object{
-        const val DB_VERSION=30
+        const val DB_VERSION=80
     }
 
 

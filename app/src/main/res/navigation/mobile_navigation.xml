@@ -9,7 +9,7 @@
         android:id="@+id/navigation_home"
         android:name="pontinisystems.vespa.presenter.favorite_stocks.ui.FavoriteStocksFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/favorite_stocks" />
+        tools:layout="@layout/fragment_favorite_stocks" />
 
     <fragment
         android:id="@+id/navigation_dashboard"

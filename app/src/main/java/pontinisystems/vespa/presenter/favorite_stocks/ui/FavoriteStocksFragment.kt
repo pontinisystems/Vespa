@@ -1,27 +1,35 @@
 package pontinisystems.vespa.presenter.favorite_stocks.ui
 
+
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
-import pontinisystems.vespa.R
+import pontinisystems.vespa.databinding.FragmentFavoriteStocksBinding
 import pontinisystems.vespa.di.appModule
-import pontinisystems.vespa.presenter.select_new_favorite_stock.ui.adapter.SelectNewFavoriteStockAdapter
-import pontinisystems.vespa.presenter.select_new_favorite_stock.ui.viewaction.SelectNewFavoriteStockAction
+import pontinisystems.vespa.domain.entities.StockFavoriteUi
+import pontinisystems.vespa.presenter.favorite_stocks.ui.adapter.FavoriteStocksAdapter
+import pontinisystems.vespa.presenter.favorite_stocks.ui.viewaction.FavoriteStocksAction
+import pontinisystems.vespa.presenter.favorite_stocks.ui.viewstate.FavoriteStocksViewState
 import pontinisystems.vespa.presenter.favorite_stocks.viewmodel.FavoriteStocksViewModel
 import pontinisystems.vespa.presenter.select_new_favorite_stock.SelectNewFavoriteStockActivity
-import pontinisystems.vespa.presenter.select_new_favorite_stock.ui.SelectNewFavoriteStocFragment
+import pontinisystems.vespa.presenter.select_new_favorite_stock.ui.viewaction.SelectNewFavoriteStockAction
 
 class FavoriteStocksFragment : Fragment() {
 
-    private val ViewModel: FavoriteStocksViewModel by viewModel()
+    private val viewModel: FavoriteStocksViewModel by viewModel()
     private fun inject() = loadModules
-    //private val adapter by lazy { SelectNewFavoriteStockAdapter(ViewModel,viewModel) }
+    private lateinit var binding:FragmentFavoriteStocksBinding
+
+    private val adapter by lazy { FavoriteStocksAdapter(viewModel, viewModel) }
+
     private val loadModules by lazy {
         unloadKoinModules(appModule)
         loadKoinModules(appModule)
@@ -37,14 +45,49 @@ class FavoriteStocksFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.favorite_stocks, container, false)
+    )= FragmentFavoriteStocksBinding.inflate(inflater,container,false).apply{
+
+        setupView()
+        observeChanges()
+    }.root
+
+    private fun FragmentFavoriteStocksBinding.setupView() {
+
+        binding=this
+        lifecycleOwner=viewLifecycleOwner
+        favoriteStocksViewModel=viewModel
+        viewState=viewModel.viewState
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ViewModel.dispatchViewAction(SelectNewFavoriteStockAction.FetchFavoriteStock)
-        startActivity(Intent(this.activity, SelectNewFavoriteStockActivity::class.java))
+        setupInitialData()
 
+
+
+    }
+    private fun setupInitialData() {
+        binding.myRecyclerView.adapter = adapter
+        binding.fab.setOnClickListener {
+            startActivity(Intent(this.activity, SelectNewFavoriteStockActivity::class.java))
+        }
+        viewModel.dispatchViewAction(FavoriteStocksAction.FetchFavoritesStocks)
+    }
+
+    private fun observeChanges() {
+        viewModel.viewState.action.observe(viewLifecycleOwner, Observer { action->
+            when(action){
+                is FavoriteStocksViewState.Action.SetFavoriteStocksList->setListAdapter(action.list)
+            }
+        })
+    }
+    private fun setListAdapter(list: List<StockFavoriteUi>) {
+        binding.myRecyclerView.adapter?.let {
+            adapter.submitList(list)
+            it.notifyDataSetChanged()
+        }
+        Log.i("SIZE ADAPTER","SIZE ADAPTER "+
+                adapter.currentList.size)
     }
 }
