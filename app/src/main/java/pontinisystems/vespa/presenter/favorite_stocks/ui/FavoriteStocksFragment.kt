@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
@@ -76,7 +77,7 @@ class FavoriteStocksFragment : Fragment() {
     }
 
     private fun observeChanges() {
-        viewModel.viewState.action.observe(viewLifecycleOwner, Observer { action->
+        viewModel.viewState.action.asLiveData().observe(viewLifecycleOwner, Observer { action->
             when(action){
                 is FavoriteStocksViewState.Action.SetFavoriteStocksList->setListAdapter(action.list)
             }

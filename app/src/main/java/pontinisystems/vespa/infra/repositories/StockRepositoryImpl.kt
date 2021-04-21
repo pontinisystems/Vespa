@@ -1,10 +1,18 @@
 package pontinisystems.vespa.infra.repositories
 
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import org.json.JSONArray
 import org.json.JSONObject
 import pontinisystems.vespa.coreapp.Either
 import pontinisystems.vespa.coreapp.Failure
+import pontinisystems.vespa.coreapp.Resource
 import pontinisystems.vespa.coreapp.toMutableList
 import pontinisystems.vespa.domain.entities.OptionStockFavoriteUi
 import pontinisystems.vespa.domain.entities.StockFavoriteUi
@@ -110,6 +118,26 @@ class StockRepositoryImpl(
             Either.Error(Failure.NetworkFailure(1, "asdasd"))
         }
 
+    }
+
+    override suspend fun getAllStockFavoriteV2(forceUpdate: Boolean): Flow<Resource<List<StockFavoriteUi>>> {
+        return flow {
+           stockFavoriteDao.selectStockFavoriteAllV2().distinctUntilChanged().collect {
+               it?.let {
+                   val transform = it.map {
+                       entityToStockFavoriteUiMapper.mapFromTwo(it,0.0)
+                   }
+                   emit(Resource.success(transform))
+               }
+
+           }
+
+        }.flowOn(Dispatchers.IO).catch {
+            it.message?.let {message->
+                emit(Resource.error(message))
+            }
+
+        }
     }
 
 

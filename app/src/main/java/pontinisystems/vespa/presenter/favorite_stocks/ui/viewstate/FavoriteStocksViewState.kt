@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.flow.MutableStateFlow
 import pontinisystems.vespa.domain.entities.OptionStockFavoriteUi
 import pontinisystems.vespa.domain.entities.StockFavoriteUi
@@ -13,18 +14,18 @@ import pontinisystems.vespa.presenter.select_new_favorite_stock.ui.viewstate.Sel
 class FavoriteStocksViewState
 {
 
-    val action = MutableLiveData<Action>()
-    val state= MutableLiveData<State>()
+    val action = MutableStateFlow<Action>(Action.Init)
+    val state= MutableStateFlow<State>(State.LOADING)
 
     val data = MutableLiveData<List<StockFavoriteUi>>().apply { value = mutableListOf() }
 
 
     sealed class Action{
-        class OpenFavoriteStock(val id:String):Action()
+        object Init : Action()
         data class SetFavoriteStocksList(val list :List<StockFavoriteUi>):
             FavoriteStocksViewState.Action()
     }
-    val isLoadingState: LiveData<Int> = Transformations.map(state) {
+    val isLoadingState: LiveData<Int> = Transformations.map(state.asLiveData()) {
         if (it == FavoriteStocksViewState.State.LOADING ) {
             Log.i("Loading","Loading")
             View.VISIBLE
@@ -32,7 +33,7 @@ class FavoriteStocksViewState
             View.GONE
         }
     }
-    val isSuccess: LiveData<Int> = Transformations.map(state) {
+    val isSuccess: LiveData<Int> = Transformations.map(state.asLiveData()) {
         if (it == FavoriteStocksViewState.State.SUCCESS ) {
             Log.i("Loading","Loading")
             View.VISIBLE
