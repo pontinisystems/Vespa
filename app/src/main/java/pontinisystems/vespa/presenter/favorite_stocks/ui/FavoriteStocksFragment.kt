@@ -91,4 +91,15 @@ class FavoriteStocksFragment : Fragment() {
         Log.i("SIZE ADAPTER","SIZE ADAPTER "+
                 adapter.currentList.size)
     }
+
+    override fun onStop() {
+        viewModel.onStop()
+        super.onStop()
+    }
+
+    override fun onResume() {
+        viewModel.dispatchViewAction(FavoriteStocksAction.FetchFavoritesStocks)
+        super.onResume()
+    }
+
 }

@@ -1,6 +1,7 @@
 package pontinisystems.vespa.domain.usecases
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import pontinisystems.vespa.coreapp.Either
 import pontinisystems.vespa.coreapp.Failure
 import pontinisystems.vespa.coreapp.Resource
