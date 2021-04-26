@@ -33,6 +33,27 @@ class FavoriteStocksViewState
             View.GONE
         }
     }
+
+    val isError: LiveData<Int> = Transformations.map(state.asLiveData()) {
+        if (it == FavoriteStocksViewState.State.ERROR ) {
+            Log.i("ERROR","ERROR")
+            View.VISIBLE
+        }else{
+            View.GONE
+        }
+    }
+
+    val isEmpty: LiveData<Int> = Transformations.map(state.asLiveData()) {
+        if (it == FavoriteStocksViewState.State.SUCCESS && data.value.isNullOrEmpty() ) {
+            Log.i("ERROR","ERROR")
+            View.VISIBLE
+        }else{
+            View.GONE
+        }
+    }
+
+
+
     val isSuccess: LiveData<Int> = Transformations.map(state.asLiveData()) {
         if (it == FavoriteStocksViewState.State.SUCCESS ) {
             Log.i("Loading","Loading")

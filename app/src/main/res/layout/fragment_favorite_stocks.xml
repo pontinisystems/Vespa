@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="favoriteStocksViewModel"
             type="pontinisystems.vespa.presenter.favorite_stocks.viewmodel.FavoriteStocksViewModel" />
@@ -11,6 +14,7 @@
             type="pontinisystems.vespa.presenter.favorite_stocks.ui.viewstate.FavoriteStocksViewState" />
 
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,9 +38,26 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center"
-            android:visibility="@{viewState.isLoadingState}"
-            android:foregroundGravity="center" />
+            android:foregroundGravity="center"
+            android:visibility="@{viewState.isLoadingState}" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Aconteceu algo inesperado"
+            android:textColor="@color/black"
+            android:visibility="@{viewState.isError()}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Clique no + para adicionar uma nova ação"
+            android:textColor="@color/black"
+            android:visibility="@{viewState.isEmpty()}" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -49,14 +70,14 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/my_recycler_view"
-                    android:visibility="@{viewState.isSuccess}"
                     android:layout_width="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_height="786dp"
-                    android:scrollbars="vertical" />
-
+                    android:scrollbars="vertical"
+                    android:visibility="@{viewState.isSuccess}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
+
 
         </androidx.core.widget.NestedScrollView>
 

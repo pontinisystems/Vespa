@@ -28,6 +28,14 @@ class SelectNewFavoriteStockViewState {
             View.GONE
         }
     }
+    val isError: LiveData<Int> = Transformations.map(state) {
+        if (it == State.ERROR ) {
+            Log.i("ERROR","ERROR")
+           View.VISIBLE
+        }else{
+            View.GONE
+        }
+    }
 
     val stocksData = MutableLiveData<List<OptionStockFavoriteUi>>().apply { value = mutableListOf() }
 
@@ -40,7 +48,6 @@ class SelectNewFavoriteStockViewState {
     }
 
     sealed class Action {
-        class OpenFavoriteStock(val id: String) : Action()
         data class SetNewFavoriteStocksList(val list :List<OptionStockFavoriteUi>):Action()
     }
 

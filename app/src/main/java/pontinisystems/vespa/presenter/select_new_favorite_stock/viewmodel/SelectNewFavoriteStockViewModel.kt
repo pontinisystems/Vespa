@@ -103,7 +103,7 @@ class SelectNewFavoriteStockViewModel(
         if(error is Failure.InputInvalid){
             setState(SelectNewFavoriteStockViewState.State.INIT_SCREEN)
         }else{
-           //TODO criar template de tela de erro
+            setState(SelectNewFavoriteStockViewState.State.ERROR)
         }
     }
 

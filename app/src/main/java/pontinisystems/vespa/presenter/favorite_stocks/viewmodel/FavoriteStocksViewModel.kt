@@ -57,8 +57,8 @@ class FavoriteStocksViewModel(
         Log.i("ERRROR", "ERROR$error")
     }
 
-    private fun setErrorScenario(error: String?) {
-        Log.i("ERRROR", "ERROR" + error.toString())
+    private suspend fun setErrorScenario(error: String?) {
+        setState(FavoriteStocksViewState.State.ERROR)
     }
 
     private suspend fun setSuccesssScenario(data: List<StockFavoriteUi>?) {
