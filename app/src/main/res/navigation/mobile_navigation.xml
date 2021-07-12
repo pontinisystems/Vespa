@@ -7,24 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="pontinisystems.vespa.presenter.favorite_stocks.ui.FavoriteStocksFragment"
+        android:name="pontinisystems.vespa.presenter.products.ui.ProductsFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_favorite_stocks" />
+        tools:layout="@layout/fragment_products" />
 
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="pontinisystems.vespa.presenter.dashboard.ui.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
 
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="pontinisystems.vespa.presenter.notifications.ui.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
-
-    <fragment
-        android:id="@+id/select_new_stock_favorite"
-        android:name="pontinisystems.vespa.presenter.select_new_favorite_stock.ui.SelectNewFavoriteStocFragment"
-        tools:layout="@layout/fragment_select_new_favorite_stock" />
 </navigation>

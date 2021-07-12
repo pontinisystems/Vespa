@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Vespa">
-        <activity android:name=".presenter.select_new_favorite_stock.SelectNewFavoriteStockActivity"></activity>
+
         <activity
             android:name=".presenter.MainActivity"
             android:label="@string/app_name">
