@@ -11,7 +11,7 @@ import pontinisystems.vespa.domain.entities.ProductUi
 
 class BottomSheet(val productUi: ProductUi) : BottomSheetDialogFragment() {
 
-    private var amountSelected=0
+    private var amountSelected = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,14 +27,20 @@ class BottomSheet(val productUi: ProductUi) : BottomSheetDialogFragment() {
 
         updateAmountTextView()
         buttonLess.setOnClickListener {
-            amountSelected=amountSelected.dec()
-            updateAmountTextView()
+            if (amountSelected.dec() >= 0) {
+                amountSelected = amountSelected.dec()
+                updateAmountTextView()
+            }
+
 
         }
 
         buttonPlus.setOnClickListener {
-            amountSelected=amountSelected.plus(1)
-            updateAmountTextView()
+            if (amountSelected.plus(1) <= productUi.amount!!) {
+                amountSelected = amountSelected.plus(1)
+                updateAmountTextView()
+            }
+
 
         }
 
@@ -47,10 +53,10 @@ class BottomSheet(val productUi: ProductUi) : BottomSheetDialogFragment() {
 
     private fun updateAmountTextView() {
         tvAmount.text = amountSelected.toString()
-        if(amountSelected<=0){
-            btBuy.alpha =.5f;
+        if (amountSelected <= 0) {
+            btBuy.alpha = .5f
 
-        }else{
+        } else {
             btBuy.alpha = 1.0f
         }
     }
