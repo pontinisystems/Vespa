@@ -18,8 +18,8 @@ class ProductViewState
 
     sealed class Action{
         object Init : Action()
-        data class SetFavoriteStocksList(val list :List<ProductUi>):
-            ProductViewState.Action()
+        data class OpenDialog(val productUi: ProductUi) : Action()
+        data class SetFavoriteStocksList(val list :List<ProductUi>):ProductViewState.Action()
     }
     val isLoadingState: LiveData<Int> = Transformations.map(state) {
         if (it == ProductViewState.State.LOADING ) {

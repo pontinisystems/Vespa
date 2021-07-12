@@ -6,10 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
@@ -22,7 +24,11 @@ import pontinisystems.vespa.presenter.products.ui.viewaction.ItemProductAction
 import pontinisystems.vespa.presenter.products.ui.viewstate.ProductViewState
 import pontinisystems.vespa.presenter.products.viewmodel.ProductsViewModel
 
+
 class ProductsFragment : Fragment() {
+
+    //#1 Defining a BottomSheetBehavior instance
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     private val viewModel: ProductsViewModel by viewModel()
     private fun inject() = loadModules
@@ -45,7 +51,7 @@ class ProductsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    )= FragmentProductsBinding.inflate(inflater,container,false).apply{
+    )= FragmentProductsBinding.inflate(inflater, container, false).apply{
 
         setupView()
         observeChanges()
@@ -78,19 +84,28 @@ class ProductsFragment : Fragment() {
     }
 
     private fun observeChanges() {
-        viewModel.viewState.action.observe(viewLifecycleOwner, Observer { action->
-            when(action){
-                is ProductViewState.Action.SetFavoriteStocksList->setListAdapter(action.list)
+        viewModel.viewState.action.observe(viewLifecycleOwner, Observer { action ->
+            when (action) {
+                is ProductViewState.Action.SetFavoriteStocksList -> setListAdapter(action.list)
+                is ProductViewState.Action.OpenDialog -> openDialog(action.productUi)
             }
         })
     }
+
+    private fun openDialog(productUi: ProductUi) {
+
+        BottomSheet(productUi).show(parentFragmentManager,"")
+
+
+    }
+
     private fun setListAdapter(list: List<ProductUi>) {
         binding.myRecyclerView.adapter?.let {
             adapter.submitList(list)
             it.notifyDataSetChanged()
         }
-        Log.i("SIZE ADAPTER","SIZE ADAPTER "+
-                adapter.currentList.size)
+        Log.i("SIZE ADAPTER", "SIZE ADAPTER " +
+            adapter.currentList.size)
     }
 
 }

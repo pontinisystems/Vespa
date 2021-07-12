@@ -17,18 +17,18 @@ class ProductsAdapter(
     private val dispactcher: ActionDispatcher<ItemProductAction>
 ) : ListAdapter<ProductUi, RecyclerView.ViewHolder>(FavoriteStocksDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return StockViewHolder(parent)
+        return ProductHolder(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as StockViewHolder).bind(getItem(position), viewModel)
+        (holder as ProductHolder).bind(getItem(position), viewModel)
     }
 
 
 }
 
 
-class StockViewHolder private constructor(private val binding: ProductViewHolderBinding) :
+class ProductHolder private constructor(private val binding: ProductViewHolderBinding) :
     RecyclerView.ViewHolder(binding.root) {
     constructor(parent: ViewGroup) : this(
         ProductViewHolderBinding.inflate(
@@ -40,6 +40,9 @@ class StockViewHolder private constructor(private val binding: ProductViewHolder
 
     fun bind(data: ProductUi, viewModel: ProductsViewModel) {
         binding.itemData = data
+        binding.clContainer.setOnClickListener {
+            viewModel.dispatchViewAction(ItemProductAction.AddItem(data))
+        }
     }
 
 

@@ -20,9 +20,14 @@ class ProductsViewModel(
     override fun dispatchViewAction(viewAction: ItemProductAction) {
         when (viewAction) {
             is ItemProductAction.Fetch -> fetch()
+            is ItemProductAction.AddItem -> addItem(viewAction.productUi)
 
             else -> TODO()
         }
+    }
+
+    private fun addItem(productUi: ProductUi) {
+        viewState.action.value = (ProductViewState.Action.OpenDialog(productUi))
     }
 
 
