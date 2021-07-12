@@ -1,5 +1,6 @@
 package pontinisystems.vespa.presenter.products.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet_persistent.*
 import pontinisystems.vespa.R
 import pontinisystems.vespa.domain.entities.ProductUi
+import pontinisystems.vespa.presenter.finish_order.FinishActivity
 
 class BottomSheet(val productUi: ProductUi) : BottomSheetDialogFragment() {
 
@@ -47,6 +49,12 @@ class BottomSheet(val productUi: ProductUi) : BottomSheetDialogFragment() {
         imgClose.setOnClickListener {
             this.dismiss()
 
+        }
+
+        btBuy.setOnClickListener {
+            if(amountSelected!=0){
+                startActivity(Intent(this.context, FinishActivity::class.java))
+            }
         }
 
     }
