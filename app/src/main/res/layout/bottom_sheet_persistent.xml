@@ -8,14 +8,16 @@
     android:background="@color/white"
     android:paddingBottom="16dp"
     app:behavior_hideable="true"
+    android:importantForAccessibility="no"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imgClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Fechar"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_close_24" />
 
