@@ -2,12 +2,16 @@ package pontinisystems.vespa.presenter.products.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import pontinisystems.vespa.R
 import pontinisystems.vespa.coreapp.ActionDispatcher
 import pontinisystems.vespa.databinding.ProductViewHolderBinding
 import pontinisystems.vespa.domain.entities.ProductUi
+import pontinisystems.vespa.extensions.redsAs
 import pontinisystems.vespa.presenter.products.ui.viewaction.ItemProductAction
 import pontinisystems.vespa.presenter.products.viewmodel.ProductsViewModel
 
@@ -22,11 +26,11 @@ class ProductsAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as ProductHolder).bind(getItem(position), viewModel)
+        with(holder.itemView.findViewById<ConstraintLayout>(R.id.clContainer)){
+            redsAs<Button>()
+        }
     }
-
-
 }
-
 
 class ProductHolder private constructor(private val binding: ProductViewHolderBinding) :
     RecyclerView.ViewHolder(binding.root) {
